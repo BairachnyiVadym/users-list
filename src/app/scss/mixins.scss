@@ -1,0 +1,32 @@
+@mixin buttonAdd($size, $thickness, $color) {
+  position: relative;
+  display: block;
+  width: $size;
+  height: $size;
+  opacity: 0.3;
+  transform-origin: center;
+  &:hover {
+    opacity: 1;
+  }
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    background-color: $color;
+    transform-origin: center;
+  }
+  &:before {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    width: $thickness;
+  }
+  &:after {
+    width: 100%;
+    height: $thickness;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+}

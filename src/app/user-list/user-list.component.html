@@ -1,0 +1,13 @@
+<ul class="list-group">
+  <a style="cursor: pointer;"
+     class="list-group-item clearfix"
+      *ngFor="let user of usersList; let i = index">
+    <div class="pull-left">
+      <img [src]="user.picture" [alt]="user.name" class="img-responsive">
+      <h4 class="list-group-item-heading">{{ user.name }}</h4>
+    </div>
+    <div class="pull-right">
+      <button class="btn--close" (click)="onUserDelete(i)"></button>
+    </div>
+  </a>
+</ul>
