@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { StorageMap } from '@ngx-pwa/local-storage';
 import { UsersService } from './services/users.service';
 import { UserInterface } from './interfaces/user.interface';
+
+import { AppConstants } from './app.constans';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +12,22 @@ import { UserInterface } from './interfaces/user.interface';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  users: UserInterface[];
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService, private storage: StorageMap) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers() {
-    this.usersService.getUsersData()
-      .subscribe((data: UserInterface[]) => {
-        this.users = data;
-      }, error => {
-        console.log('Error: ' + error);
-      });
+    this.storage.has(AppConstants.storageKey)
+      .subscribe((presenceInStorage) => {
+        if (!presenceInStorage) {
+          this.usersService.getUsersData()
+            .subscribe((data: UserInterface[]) => {
+              this.storage.set(AppConstants.storageKey, data).subscribe();
+            });
+        }
+    });
   }
 }
