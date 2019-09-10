@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StorageMap } from '@ngx-pwa/local-storage';
 import { repeat } from 'rxjs/operators';
 
+import { UsersService } from '../services/users.service';
 import { UserInterface } from '../interfaces/user.interface';
-import { AppConstants } from '../app.constans';
 
 @Component({
   selector: 'app-user-list',
@@ -14,20 +13,19 @@ import { AppConstants } from '../app.constans';
 export class UserListComponent implements OnInit {
   usersList: UserInterface[];
 
-  constructor(private storage: StorageMap, private router: Router, private route: ActivatedRoute) { }
+  constructor(private usersService: UsersService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.storage.get(AppConstants.storageKey)
+    this.usersService.getUsersFromStorage()
       .pipe(repeat(4))
       .subscribe((data: UserInterface[]) => {
         this.usersList = data;
-        console.log(this.usersList);
       });
   }
 
   onUserDelete(index: number) {
     this.usersList.splice(index, 1);
-    this.storage.set(AppConstants.storageKey, this.usersList).subscribe();
+    this.usersService.updateUsersInStorage(this.usersList);
   }
 
   onClick(id: string) {
