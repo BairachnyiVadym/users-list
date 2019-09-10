@@ -12,14 +12,14 @@
 <div class="row">
   <div class="col-md-6">
     <h3>General Info</h3>
-    <p><b>Address:</b> {{ user.address }}</p>
-    <p><b>Email:</b> {{ user.email }}</p>
-    <p><b>Phone:</b> {{ user.phone }}</p>
+    <p><span class="glyphicon glyphicon-home" aria-hidden="true"></span> {{ user.address }}</p>
+    <p><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ user.email }}</p>
+    <p><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> {{ user.phone }}</p>
   </div>
   <div class="col-md-6">
     <h3>Account Info</h3>
-    <p><b>Registered:</b> {{ userRegTime | date:'MM-dd-yyyy HH-mm' }}</p>
-    <p><b>Balance:</b> {{ user.balance }}</p>
+    <p><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ userRegTime | date:'MM-dd-yyyy HH-mm' }}</p>
+    <p><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> {{ user.balance }}</p>
   </div>
 </div>
 <hr>
