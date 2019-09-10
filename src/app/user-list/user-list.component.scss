@@ -1,6 +1,6 @@
 @import '../scss/mixins.scss';
 
-a {
+li {
   display: flex;
   align-items: center;
   .pull-left {
@@ -12,6 +12,9 @@ a {
     h4 {
       margin-left: 15px;
       margin-bottom: 0px;
+    }
+    .badge {
+      margin-left: 10px;
     }
   }
 

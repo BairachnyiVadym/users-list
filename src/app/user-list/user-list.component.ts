@@ -16,6 +16,10 @@ export class UserListComponent implements OnInit {
   constructor(private usersService: UsersService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.getUsers();
+  }
+
+  getUsers() {
     this.usersService.getUsersFromStorage()
       .pipe(repeat(4))
       .subscribe((data: UserInterface[]) => {
