@@ -11,7 +11,8 @@ import { UserInterface } from '../interfaces/user.interface';
 })
 export class UserProfileComponent implements OnInit {
   id: string;
-  user: UserInterface;
+  user = {} as UserInterface;
+  userRegTime;
 
   constructor(private route: ActivatedRoute, private usersService: UsersService) { }
 
@@ -28,7 +29,14 @@ export class UserProfileComponent implements OnInit {
       this.user = users.find((userObj: UserInterface) => {
         return userObj._id === this.id;
       });
+      this.transformRegDate(this.user.registered);
+      console.log(this.user);
     });
+  }
+
+  transformRegDate(date: string) {
+    const preparedDateStr = date.replace(/\s+/, '');
+    this.userRegTime = new Date(preparedDateStr);
   }
 
 }

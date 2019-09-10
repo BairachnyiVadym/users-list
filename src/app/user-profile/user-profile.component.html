@@ -1,1 +1,27 @@
-<p>The ID of the user: {{ id }}</p>
+<div class="row">
+  <div class="col-md-1">
+    <img [src]="user.picture" [alt]="user.name" class="img-responsive">
+  </div>
+  <div class="col-md-11">
+    <h1>{{ user.name }}</h1>
+    <p><b>{{ user.age }} years of age.</b></p>
+  </div>
+</div>
+<p><b>About:</b> {{ user.about }}</p>
+<hr>
+<div class="row">
+  <div class="col-md-6">
+    <h3>General Info</h3>
+    <p><b>Address:</b> {{ user.address }}</p>
+    <p><b>Email:</b> {{ user.email }}</p>
+    <p><b>Phone:</b> {{ user.phone }}</p>
+  </div>
+  <div class="col-md-6">
+    <h3>Account Info</h3>
+    <p><b>Registered:</b> {{ userRegTime | date:'MM-dd-yyyy HH-mm' }}</p>
+    <p><b>Balance:</b> {{ user.balance }}</p>
+  </div>
+</div>
+<hr>
+<div class="badges"><b>User tags: </b><span class="badge" *ngFor="let tag of user.tags">{{ tag }}</span></div>
+
