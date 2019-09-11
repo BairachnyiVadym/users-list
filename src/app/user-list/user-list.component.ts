@@ -26,14 +26,14 @@ export class UserListComponent implements OnInit {
     this.getUsers();
 
     this.addUserForm = new FormGroup({
-      'username': new FormControl(null, Validators.required),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
-      'phone': new FormControl(null, Validators.required),
-      'address': new FormControl(null, Validators.required),
-      'balance': new FormControl('$', Validators.required),
-      'age': new FormControl(null, Validators.required),
-      'about': new FormControl(null, Validators.required),
-      'tags': new FormArray([
+      username: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      phone: new FormControl(null, Validators.required),
+      address: new FormControl(null, Validators.required),
+      balance: new FormControl('$', Validators.required),
+      age: new FormControl(null, Validators.required),
+      about: new FormControl(null, Validators.required),
+      tags: new FormArray([
         new FormControl('new user')
       ])
     });
@@ -72,11 +72,11 @@ export class UserListComponent implements OnInit {
 
   onAddTag() {
     const control = new FormControl(null, Validators.required);
-    (<FormArray>this.addUserForm.get('tags')).push(control);
+    (<FormArray> this.addUserForm.get('tags')).push(control);
   }
 
   getTags() {
-    return (<FormArray>this.addUserForm.get('tags')).controls;
+    return (<FormArray> this.addUserForm.get('tags')).controls;
   }
 
   onSubmit() {
