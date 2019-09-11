@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { repeat } from 'rxjs/operators';
 
 import { UsersService } from '../services/users.service';
+import { ModalService } from '../_modal';
 import { UserInterface } from '../interfaces/user.interface';
 
 @Component({
@@ -13,7 +14,10 @@ import { UserInterface } from '../interfaces/user.interface';
 export class UserListComponent implements OnInit {
   usersList: UserInterface[];
 
-  constructor(private usersService: UsersService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private usersService: UsersService,
+              private modalService: ModalService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.getUsers();
@@ -34,6 +38,14 @@ export class UserListComponent implements OnInit {
 
   onClick(id: string) {
     this.router.navigate([id], {relativeTo: this.route});
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 
 }

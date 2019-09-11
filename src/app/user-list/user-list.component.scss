@@ -1,5 +1,9 @@
 @import '../scss/mixins.scss';
 
+.btn.btn-success {
+  margin-top: 20px;
+}
+
 li {
   display: flex;
   align-items: center;

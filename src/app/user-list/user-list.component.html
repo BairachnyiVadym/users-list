@@ -1,3 +1,5 @@
+<button class="btn btn-success" (click)="openModal('add-user-modal')">Add User</button>
+<hr>
 <ul class="list-group">
   <li style="cursor: pointer;"
      class="list-group-item clearfix"
@@ -16,3 +18,7 @@
     </div>
   </li>
 </ul>
+<app-jw-modal id="add-user-modal">
+  <h1>A Custom Modal!</h1>
+  <button (click)="closeModal('add-user-modal');">Close</button>
+</app-jw-modal>
