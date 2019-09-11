@@ -4,6 +4,10 @@
   margin-top: 20px;
 }
 
+.btn.btn-default {
+  margin-bottom: 10px;
+}
+
 li {
   display: flex;
   align-items: center;
@@ -15,7 +19,7 @@ li {
     }
     h4 {
       margin-left: 15px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
     .badge {
       margin-left: 10px;
@@ -34,5 +38,8 @@ li {
       @include buttonAdd(16px, 2px, #333);
     }
   }
+}
 
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
 }
