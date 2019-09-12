@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { repeat } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { UsersService } from '../services/users.service';
 import { ModalService } from '../_modal';
@@ -12,10 +12,11 @@ import { UserInterface } from '../interfaces/user.interface';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   usersList: UserInterface[];
   addUserForm: FormGroup;
   newUser: UserInterface;
+  subscription: Subscription;
 
   constructor(private usersService: UsersService,
               private modalService: ModalService,
@@ -23,7 +24,12 @@ export class UserListComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.subscription = this.usersService.passUsersSubject
+      .subscribe((users: UserInterface[]) => {
+        this.usersList = users;
+      });
+
+    this.loadUsers();
 
     this.addUserForm = new FormGroup({
       username: new FormControl(null, Validators.required),
@@ -39,13 +45,8 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  getUsers() {
-    this.usersService.getUsersFromStorage()
-      .pipe(repeat(4))
-      .subscribe((data: UserInterface[]) => {
-        this.usersList = data;
-        console.log(this.usersList);
-      });
+  loadUsers() {
+    this.usersService.loadUsers();
   }
 
   onUserDelete(index: number) {
@@ -106,6 +107,10 @@ export class UserListComponent implements OnInit {
     this.onUserAdd(this.newUser);
 
     this.addUserForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

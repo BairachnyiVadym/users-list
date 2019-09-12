@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { StorageMap } from '@ngx-pwa/local-storage';
+import { Subject } from 'rxjs';
 
 import { UserInterface } from '../interfaces/user.interface';
 import { AppConstants } from '../app.constans';
@@ -10,6 +11,8 @@ import { AppConstants } from '../app.constans';
 })
 export class UsersService {
   usersDataUrl = 'assets/users.json';
+  passUsersSubject = new Subject<UserInterface[]>();
+  passUserSubject = new Subject<UserInterface>();
 
   constructor(private http: HttpClient, private storage: StorageMap) { }
 
@@ -17,20 +20,32 @@ export class UsersService {
     return this.http.get<UserInterface[]>(this.usersDataUrl);
   }
 
-  setUsersToStorage() {
+  loadUsers() {
     this.storage.has(AppConstants.storageKey)
       .subscribe((presenceInStorage: boolean) => {
         if (!presenceInStorage) {
           this.getUsersData()
             .subscribe((data: UserInterface[]) => {
+              this.passUsersSubject.next(data);
               this.storage.set(AppConstants.storageKey, data).subscribe();
+            });
+        } else {
+          this.storage.get(AppConstants.storageKey)
+            .subscribe((data: UserInterface[]) => {
+              this.passUsersSubject.next(data);
             });
         }
       });
   }
 
-  getUsersFromStorage() {
-    return this.storage.get(AppConstants.storageKey);
+  getUserFromStorage(id) {
+    this.storage.get(AppConstants.storageKey)
+      .subscribe((data: UserInterface[]) => {
+        const user = data.find((userObj: UserInterface) => {
+          return userObj._id === id;
+        });
+        this.passUserSubject.next(user);
+      });
   }
 
   updateUsersInStorage(value) {
