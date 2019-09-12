@@ -1,3 +1,5 @@
+@import '../scss/mixins.scss';
+
 img {
   margin: 24px auto 0 auto;
 }
@@ -13,6 +15,18 @@ img {
   margin-bottom: 20px;
   .badge {
     margin: 0 0 5px 5px;
+
+    $num-colors: 10;
+    $base-color: #996B4D;
+    $spectrum: 360deg;
+    $offset:50deg;
+
+    @for $i from 0 to $num-colors {
+      &:nth-child(#{$i}) {
+        @include random-bgr();
+      }
+    }
+
   }
 }
 
@@ -20,7 +34,6 @@ img {
   img {
     margin: 24px 0 0 0;
   }
-
   .user-header {
     text-align: left;
   }
