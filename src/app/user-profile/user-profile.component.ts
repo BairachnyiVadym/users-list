@@ -26,6 +26,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.subscription = this.usersService.passUserSubject
       .subscribe((user: UserInterface) => {
+        user.picture = 'http://placehold.it/140';
         this.user = user;
         this.transformRegDate(this.user.registered);
       });

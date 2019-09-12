@@ -1,11 +1,28 @@
 img {
-  margin-top: 24px;
+  margin: 24px auto 0 auto;
+}
+.user-header {
+  text-align: center;
+}
+
+#about {
+  margin-top: 20px;
 }
 
 .badges {
   margin-bottom: 20px;
   .badge {
-    margin-left: 5px;
+    margin: 0 0 5px 5px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  img {
+    margin: 24px 0 0 0;
+  }
+
+  .user-header {
+    text-align: left;
   }
 }
 
