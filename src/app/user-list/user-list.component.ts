@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { UsersService } from '../services/users.service';
@@ -14,8 +13,6 @@ import { UserInterface } from '../interfaces/user.interface';
 })
 export class UserListComponent implements OnInit, OnDestroy {
   usersList: UserInterface[];
-  addUserForm: FormGroup;
-  newUser: UserInterface;
   subscription: Subscription;
 
   constructor(private usersService: UsersService,
@@ -30,19 +27,6 @@ export class UserListComponent implements OnInit, OnDestroy {
       });
 
     this.loadUsers();
-
-    this.addUserForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      phone: new FormControl(null, Validators.required),
-      address: new FormControl(null, Validators.required),
-      balance: new FormControl('$', [Validators.required, Validators.minLength(2)]),
-      age: new FormControl(null, Validators.required),
-      about: new FormControl(null, Validators.required),
-      tags: new FormArray([
-        new FormControl('new user')
-      ])
-    });
   }
 
   loadUsers() {
@@ -54,7 +38,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.usersService.updateUsersInStorage(this.usersList);
   }
 
-  onUserAdd(userObj: UserInterface) {
+  onEmitUser(userObj: UserInterface) {
     this.usersList.push(userObj);
     this.usersService.updateUsersInStorage(this.usersList);
   }
@@ -65,50 +49,6 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   openModal(id: string) {
     this.modalService.open(id);
-  }
-
-  closeModal(id: string) {
-    this.modalService.close(id);
-  }
-
-  onAddTag() {
-    const control = new FormControl(null, Validators.required);
-    const tagsFormArray = this.addUserForm.get('tags') as FormArray;
-    tagsFormArray.push(control);
-  }
-
-  getTags() {
-    const tagsFormArray = this.addUserForm.get('tags') as FormArray;
-    return tagsFormArray.controls;
-  }
-
-  onSubmit() {
-    this.closeModal('add-user-modal');
-
-    this.newUser = {
-      _id: Date.now().toString(),
-      guid: '',
-      isActive:  Math.random() > 0.5,
-      balance: this.addUserForm.value.balance,
-      picture: 'http://placehold.it/32x32',
-      age: this.addUserForm.value.age,
-      eyeColor: '',
-      name: this.addUserForm.value.username,
-      gender: '',
-      company: '',
-      email: this.addUserForm.value.email,
-      phone: this.addUserForm.value.phone,
-      address: this.addUserForm.value.address,
-      about: this.addUserForm.value.about,
-      registered: new Date(Date.now()).toISOString(),
-      latitude: null,
-      longitude: null,
-      tags: this.addUserForm.value.tags
-    };
-
-    this.onUserAdd(this.newUser);
-
-    this.addUserForm.reset();
   }
 
   ngOnDestroy(): void {

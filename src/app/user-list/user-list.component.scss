@@ -4,10 +4,6 @@
   margin-top: 20px;
 }
 
-.btn.btn-default {
-  margin-bottom: 10px;
-}
-
 li {
   display: flex;
   align-items: center;
@@ -39,8 +35,4 @@ li {
       @include buttonAdd(16px, 2px, #333);
     }
   }
-}
-
-input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
-  border: 1px solid red;
 }

@@ -9,12 +9,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserAddComponent } from './user-add/user-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserAddComponent
   ],
   imports: [
     BrowserModule,
