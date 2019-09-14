@@ -73,11 +73,13 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   onAddTag() {
     const control = new FormControl(null, Validators.required);
-    (<FormArray> this.addUserForm.get('tags')).push(control);
+    const tagsFormArray = this.addUserForm.get('tags') as FormArray;
+    tagsFormArray.push(control);
   }
 
   getTags() {
-    return (<FormArray> this.addUserForm.get('tags')).controls;
+    const tagsFormArray = this.addUserForm.get('tags') as FormArray;
+    return tagsFormArray.controls;
   }
 
   onSubmit() {
