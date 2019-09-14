@@ -36,7 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       email: new FormControl(null, [Validators.required, Validators.email]),
       phone: new FormControl(null, Validators.required),
       address: new FormControl(null, Validators.required),
-      balance: new FormControl('$', Validators.required),
+      balance: new FormControl('$', [Validators.required, Validators.minLength(2)]),
       age: new FormControl(null, Validators.required),
       about: new FormControl(null, Validators.required),
       tags: new FormArray([
