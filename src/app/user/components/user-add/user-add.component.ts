@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalService } from '../_modal';
+import { ModalService } from '../../../_modal';
 
-import { UserInterface } from '../interfaces/user.interface';
+import { UserInterface } from '../../models/user.interface';
 
 @Component({
   selector: 'app-user-add',

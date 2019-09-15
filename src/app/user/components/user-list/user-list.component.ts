@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { UsersService } from '../services/users.service';
-import { ModalService } from '../_modal';
-import { UserInterface } from '../interfaces/user.interface';
+import { UsersService } from '../../services/users.service';
+import { ModalService } from '../../../_modal';
+import { UserInterface } from '../../models/user.interface';
 
 @Component({
   selector: 'app-user-list',

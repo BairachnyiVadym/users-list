@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { Subject } from 'rxjs';
 
-import { UserInterface } from '../interfaces/user.interface';
-import { AppConstants } from '../app.constans';
+import { UserInterface } from '../models/user.interface';
+import { AppConstants } from '../../app.constans';
 
 @Injectable({
   providedIn: 'root'
