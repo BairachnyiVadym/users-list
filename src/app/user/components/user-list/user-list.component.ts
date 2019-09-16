@@ -30,17 +30,17 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   loadUsers() {
-    this.usersService.loadUsers();
+    this.usersService.loadUsers().subscribe();
   }
 
   onUserDelete(index: number) {
     this.usersList.splice(index, 1);
-    this.usersService.updateUsersInStorage(this.usersList);
+    this.usersService.updateUsersInStorage(this.usersList).subscribe();
   }
 
   onEmitUser(userObj: UserInterface) {
     this.usersList.push(userObj);
-    this.usersService.updateUsersInStorage(this.usersList);
+    this.usersService.updateUsersInStorage(this.usersList).subscribe();
   }
 
   onNavigate(id: string) {

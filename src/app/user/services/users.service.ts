@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { StorageMap } from '@ngx-pwa/local-storage';
-import { Subject } from 'rxjs';
+import { StorageMap } from '@ngx-pwa/local-storage'; // any storage observable autocompletes!
+import { Observable, Subject } from 'rxjs';
+import { filter, flatMap, switchMap } from 'rxjs/operators';
 
 import { UserInterface } from '../models/user.interface';
 import { AppConstants } from '../../app.constans';
@@ -12,43 +13,40 @@ import { AppConstants } from '../../app.constans';
 export class UsersService {
   usersDataUrl = 'assets/users.json';
   passUsersSubject = new Subject<UserInterface[]>();
-  passUserSubject = new Subject<UserInterface>();
 
   constructor(private http: HttpClient, private storage: StorageMap) { }
 
-  getUsersData() {
+  loadUsers() {
+    let hasCollFlag;
+    return this.storage.has(AppConstants.storageKey).pipe( // though used switchMap operator for demo purposes
+      switchMap((presenceInStorage) => {
+        hasCollFlag = presenceInStorage;
+        return presenceInStorage ? this.getUsersFromStorage() : this.getUsersDataFromJSON();
+      })
+    ).pipe(
+      switchMap((data: UserInterface[]) => {
+        this.passUsersSubject.next(data);
+        return hasCollFlag ? new Observable() : this.storage.set(AppConstants.storageKey, data);
+      })
+    );
+  }
+
+  getUsersDataFromJSON(): Observable<UserInterface[]> {
     return this.http.get<UserInterface[]>(this.usersDataUrl);
   }
 
-  loadUsers() {
-    this.storage.has(AppConstants.storageKey)
-      .subscribe((presenceInStorage: boolean) => {
-        if (!presenceInStorage) {
-          this.getUsersData()
-            .subscribe((data: UserInterface[]) => {
-              this.passUsersSubject.next(data);
-              this.storage.set(AppConstants.storageKey, data).subscribe();
-            });
-        } else {
-          this.storage.get(AppConstants.storageKey)
-            .subscribe((data: UserInterface[]) => {
-              this.passUsersSubject.next(data);
-            });
-        }
-      });
+  getUsersFromStorage() {
+    return this.storage.get(AppConstants.storageKey);
   }
 
-  getUserFromStorage(id) {
-    this.storage.get(AppConstants.storageKey)
-      .subscribe((data: UserInterface[]) => {
-        const user = data.find((userObj: UserInterface) => {
-          return userObj._id === id;
-        });
-        this.passUserSubject.next(user);
-      });
+  getUserFromStorage(id: string): Observable<UserInterface> {
+    return this.getUsersFromStorage().pipe(
+      flatMap((data: UserInterface[]) => data),
+      filter((user: UserInterface) => user._id === id)
+    );
   }
 
   updateUsersInStorage(value) {
-    this.storage.set(AppConstants.storageKey, value).subscribe();
+    return this.storage.set(AppConstants.storageKey, value);
   }
 }

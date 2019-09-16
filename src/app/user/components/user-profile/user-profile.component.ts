@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 import { UsersService } from '../../services/users.service';
 import { UserInterface } from '../../models/user.interface';
@@ -10,11 +9,10 @@ import { UserInterface } from '../../models/user.interface';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit, OnDestroy {
+export class UserProfileComponent implements OnInit {
   id: string;
   user = {} as UserInterface;
   userRegTime;
-  subscription: Subscription;
 
   constructor(private route: ActivatedRoute, private usersService: UsersService) { }
 
@@ -24,27 +22,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.id = params.id;
     });
 
-    this.subscription = this.usersService.passUserSubject
-      .subscribe((user: UserInterface) => {
-        user.picture = 'http://placehold.it/140';
-        this.user = user;
-        this.transformRegDate(this.user.registered);
-      });
-
-    this.getUser();
+    this.getUser(this.id);
   }
 
-  getUser() {
-    this.usersService.getUserFromStorage(this.id);
+  getUser(id: string) {
+    this.usersService.getUserFromStorage(id)
+      .subscribe((user: UserInterface) => {
+        this.user = user;
+        this.user.picture = 'http://placehold.it/140';
+        this.transformRegDate(this.user.registered);
+      });
   }
 
   transformRegDate(date: string) {
     const preparedDateStr = date.replace(/\s+/, '');
     this.userRegTime = new Date(preparedDateStr);
   }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
 }
