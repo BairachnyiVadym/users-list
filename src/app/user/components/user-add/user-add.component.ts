@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../../_modal';
 
 import { UserInterface } from '../../models/user.interface';
@@ -10,28 +10,31 @@ import { UserInterface } from '../../models/user.interface';
   styleUrls: ['./user-add.component.scss']
 })
 export class UserAddComponent implements OnInit {
-  addUserForm = new FormGroup({
-    username: new FormControl(null, Validators.required),
-    email: new FormControl(null, [Validators.required, Validators.email]),
-    phone: new FormControl(null, Validators.required),
-    address: new FormControl(null, Validators.required),
-    balance: new FormControl('$', [Validators.required, Validators.minLength(2)]),
-    age: new FormControl(null, Validators.required),
-    about: new FormControl(null, Validators.required),
-    tags: new FormArray([
-      new FormControl('new user')
-    ])
-  });
+  addUserForm: FormGroup;
   newUser: UserInterface;
   @Output() emitUser: EventEmitter<UserInterface> = new EventEmitter();
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.addUserForm = this.formBuilder.group({
+      username: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, Validators.required],
+      address: [null, Validators.required],
+      balance: ['$', [Validators.required, Validators.minLength(2)]],
+      age: [null, Validators.required],
+      about: [null, Validators.required],
+      tags: this.formBuilder.array([ this.createInitialTag() ])
+    });
+  }
+
+  createInitialTag(): FormControl {
+    return this.formBuilder.control('new user', Validators.required);
   }
 
   onAddTag() {
-    const control = new FormControl(null, Validators.required);
+    const control = this.formBuilder.control(null, Validators.required);
     const tagsFormArray = this.addUserForm.get('tags') as FormArray;
     tagsFormArray.push(control);
   }
