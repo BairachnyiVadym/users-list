@@ -1,7 +1,18 @@
-.btn.btn-default {
-  margin-bottom: 10px;
+.btn {
+  &.btn-default {
+    margin-bottom: 10px;
+  }
 }
 
-input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
-  border: 1px solid red;
+.btn {
+  &.btn-primary {
+    display: block;
+    margin: 0 0 0 auto;
+  }
+}
+
+input, textarea {
+  &.ng-invalid.ng-touched {
+    border: 1px solid red;
+  }
 }
