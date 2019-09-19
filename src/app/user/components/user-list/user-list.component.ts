@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { UsersService } from '../../services/users.service';
-import { ModalService } from '../../../_modal';
 import { UserInterface } from '../../models/user.interface';
 
 @Component({
@@ -14,9 +13,9 @@ import { UserInterface } from '../../models/user.interface';
 export class UserListComponent implements OnInit, OnDestroy {
   usersList: UserInterface[];
   subscription: Subscription;
+  modalOpen = false;
 
   constructor(private usersService: UsersService,
-              private modalService: ModalService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -41,14 +40,19 @@ export class UserListComponent implements OnInit, OnDestroy {
   onEmitUser(userObj: UserInterface) {
     this.usersList.push(userObj);
     this.usersService.updateUsersInStorage(this.usersList).subscribe();
+    this.modalOpen = false;
   }
 
   onNavigate(id: string) {
     this.router.navigate([id], {relativeTo: this.route});
   }
 
-  openModal(id: string) {
-    this.modalService.open(id);
+  onModalOpen() {
+    this.modalOpen = true;
+  }
+
+  onModalClose() {
+    this.modalOpen = false;
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-<button class="btn btn-success" (click)="openModal('add-user-modal')">Add User</button>
+<button class="btn btn-success" (click)="onModalOpen()">Add User</button>
 <hr>
 <ul class="list-group">
   <li style="cursor: pointer;"
@@ -18,6 +18,6 @@
     </div>
   </li>
 </ul>
-<app-jw-modal id="add-user-modal">
+<app-modal *ngIf="modalOpen" (closeModal)="onModalClose()">
   <app-user-add (emitUser)="onEmitUser($event)"></app-user-add>
-</app-jw-modal>
+</app-modal>

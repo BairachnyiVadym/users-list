@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalService } from '../../../_modal';
 
 import { UserInterface } from '../../models/user.interface';
 
@@ -14,7 +13,7 @@ export class UserAddComponent implements OnInit {
   newUser: UserInterface;
   @Output() emitUser: EventEmitter<UserInterface> = new EventEmitter();
 
-  constructor(private modalService: ModalService, private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.addUserForm = this.formBuilder.group({
@@ -44,13 +43,7 @@ export class UserAddComponent implements OnInit {
     return tagsFormArray.controls;
   }
 
-  closeModal(id: string) {
-    this.modalService.close(id);
-  }
-
   onSubmit() {
-    this.closeModal('add-user-modal');
-
     this.newUser = {
       _id: Date.now().toString(),
       guid: '',
